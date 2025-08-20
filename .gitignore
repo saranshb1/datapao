@@ -1,0 +1,5 @@
+# Ignore the dataset
+ZTBus/
+
+#Ignore all zip files
+*.zip
