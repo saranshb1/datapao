@@ -1,5 +1,7 @@
 # Ignore the dataset
 ZTBus/
+finalData.parquet/
 
 #Ignore all zip files
 *.zip
+*.pptx
