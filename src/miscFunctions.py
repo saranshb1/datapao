@@ -1,6 +1,7 @@
 
 import psutil
 import pandas as pd
+import numpy as np
 
 def ram_usage():
     """
@@ -55,4 +56,36 @@ def getDataFrameDTypes(df: pd.DataFrame) -> pd.DataFrame:
     """
 
     return dtype_df
+
+
+def missingPercentage(df, extra_missing_values=None):
+    """
+    Calculates missing value percentage for each column.
+    
+    Parameters:
+    - df: pandas DataFrame
+    - extra_missing_values: list of values to treat as missing 
+      (e.g., ['-', 'NA', 'N/A', ''])
+    
+    Returns:
+    DataFrame with columns:
+    - 'missing_count'
+    - 'missing_percent'
+    """
+    df_copy = df.copy()
+
+    # Replace extra placeholders with NaN
+    if extra_missing_values is not None:
+        df_copy.replace(extra_missing_values, np.nan, inplace=True)
+
+    total_rows = len(df_copy)
+    missing_count = df_copy.isnull().sum()
+    missing_percent = (missing_count / total_rows) * 100
+
+    result = pd.DataFrame({
+        'missing_count': missing_count,
+        'missing_percent': missing_percent
+    }).sort_values(by='missing_percent', ascending=False)
+
+    return result
 
